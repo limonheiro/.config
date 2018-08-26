@@ -142,7 +142,10 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 bindsym $mod+Shift+P exec firefox
+bindsym $mod+Shift+X exec chromium
+bindsym $mod+Shift+N exec urxvt -e "netbeans"
 bindsym $mod+Shift+H exec urxvt -e htop
+bindsym $mod+z exec urxvt -e ranger
 bindsym $mod+Shift+O exec octave-gui
 
 # resize window (you can also use the mouse for that)
@@ -172,7 +175,7 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 #change background picture
-bindsym $mod+b exec "feh --randomize --no-fehbg --bg-fill $HOME/.background/*"
+bindsym $mod+b exec "feh --randomize --no-scale --bg-fill $HOME/.wallpaper/*"
 bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
 # decrease volume
 bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
@@ -180,6 +183,8 @@ bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
 bindsym XF86AudioMute exec amixer -q set Master mute
 #hide borders
 hide_edge_borders smart 
+bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
+bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 #bindsym $mod+u border none
 #exec xcompmgr -c -f -n 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -193,3 +198,4 @@ bar {
 		background #00000000
 	}
 }
+
