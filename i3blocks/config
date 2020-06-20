@@ -1,37 +1,154 @@
-# Guess the weather hourly
-[weather]
-command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
-interval=3600
-color=#A4C2F4
+# i3blocks config file
+#
+# Please see man i3blocks for a complete reference!
+# The man page is also hosted at http://vivien.github.io/i3blocks
+#
+# List of valid properties:
+#
+# align
+# color
+# command
+# full_text
+# instance
+# interval
+# label
+# min_width
+# name
+# separator
+# separator_block_width
+# short_text
+# signal
+# urgent
 
-# Query my default IP address only on startup
-[ip]
-command=echo $(hostname --ip-addresses | awk '{ print "IP:" $1 }')
+# Global properties
+#
+# The top properties below are applied to every block, but can be overridden.
+# Each block command defaults to the script name to avoid boilerplate.
+# Change $SCRIPT_DIR to the location of your scripts!
+#$SCRIPT_DIR=/home/nico/.config/i3blocks/i3blocks-contrib/
+#command=$SCRIPT_DIR/$BLOCK_NAME
+separator_block_width=12
+markup=none
+
+[monitors]
+command=$SCRIPT_DIR/monitor_manager
 interval=once
-color=#91E78B
+#SHOW_ON_OFF=1
+#SHOW_NAMES=1
+#SHOW_PRIMARY=1
+#SHOW_MODE=1
+#SHOW_BLANKED=1
+#SHOW_DUPLICATE=1
+#SHOW_ROTATION=1
+#SHOW_REFLECTION=1
+#SHOW_BRIGHTNESS=1
+#SHOW_BRIGHTNESS_VALUE=0
+#SHOW_UP_DOWN=1
+#FONT_FAMILY=DejaVu Sans Mono
+#FONT_SIZE=11
+#CLOSE_TO_BOUNDARY_BUFFER=20
 
-[memory]
-command=free -h |cut -c 27-30| tail -2 | head -1
-interval=10
+[ytdl-mpv]
+command=$SCRIPT_DIR/ytdl-mpv
+markup=pango
+interval=once
+signal=4
+#CACHE_DEFAULT=1048576
+#PLAYING_COLOR=red
+#NOT_PLAYING_COLOR=white
 
-[temp]
-command=echo $(sensors|head -3|tail -1| cut -c 17-22)
-interval=10
-
-[battery]
-command=battery.sh
-#command=acpi -b | grep "Battery ${BATTERY}" | cut -c 11-27
-interval=1
-
-[cpu]
-command=echo $(lscpu |tail -11|head -1| cut -c 20-) $( lscpu |tail -11|head -1| cut -c 4-7)
-interval=10
-
-[caps-lock]
-command=xset -q | grep Caps | awk '{ print $2, $3, $4 }'
-interval=1
+[mediaplayer]
+command=$SCRIPT_DIR/mediaplayer
+instance=spotify
+interval=5
 signal=10
 
+[memory]
+command=$SCRIPT_DIR/memory
+label=MEM
+interval=30
+
+[cpu_usage]
+command=$SCRIPT_DIR/cpu_usage
+interval=1
+label=CPU 
+min_width=CPU: 100.00%
+#t_warn=50
+#T_CRIT=80
+#DECIMALS=2
+
+[disk-io]
+command=$SCRIPT_DIR/disk-io
+#command=$SCRIPT_DIR/disk-io -w 3 -M -P 0
+interval=persist
+markup=pango
+label=Disk
+#instance=/^sda/
+#DT=5
+#MB_ONLY=0 #0 or 1
+#KB_ONLY=0 #0 or 1
+#WIDTH=4
+#MB_PRECISION=1
+#KB_PRECISION=0
+#REGEX=/^(s|h)d[a-zA-Z]+/
+#THRESHOLD=0
+#WARN_COLOR="#FF0000"
+#SEPARATOR=/
+#PREFIX=
+#SUFFIX="B/s"
+
+[volume]
+command=$SCRIPT_DIR/volume
+#LABEL=♪ 
+label=VOL 
+interval=once
+signal=10
+interval=1
+#STEP=5%
+#MIXER=[determined automatically]
+#SCONTROL=[determined automatically]
+
 [time]
-command=date +%H:%M
+command=$SCRIPT_DIR/time
+interval=1
+#TZ_FILE=~/.tz
+#STRFTIME_FORMAT=%Y-%m-%d %H:%M
+#TZONES=$DEFAULT_TZ,Brazil/East,Australia/Brisbane,Asia/Calcutta
+#TZ_LABELS=,Brazil,AU,Hyderabad
+
+[shutdown_menu]
+full_text=Quit
+# If you are using FontAwesome, we recommend the power-off icon:
+# http://fontawesome.io/icon/power-off/
+command=$SCRIPT_DIR/shutdown_menu
+#FG_COLOR=#bbbbbb
+#BG_COLOR=#111111
+#HLFG_COLOR=#111111
+#HLBG_COLOR=#bbbbbb
+#BORDER_COLOR=#222222
+#ROFI_TEXT=Menu:
+#ROFI_OPTIONS=-width 11 -location 3 -hide-scrollbar -bw 2
+#ZENITY_TITLE=Menu
+#ZENITY_TEXT=Action:
+#ZENITY_OPTIONS=--column= --hide-header
+#ENABLE_CONFIRMATIONS=true (must be true or false)
+#LAUNCHER=rofi (must be rofi or zenity)
+#LOCKSCRIPT=i3lock --color=${BG_COLOR#"#"}
+[batterybar]
+command=$SCRIPT_DIR/batterybar
+label=bat:
 interval=5
+markup=pango
+min_width=bat: ■■■■■
+# Discharging colors low to high
+#C1=#FF0027
+#C2=#FF3B05
+#C3=#FFB923
+#C4=#FFD000
+#C5=#E4FF00
+#C6=#ADFF00
+#C7=#6DFF00
+#C8=#10BA00
+#CHARGING_COLOR=#00AFE3
+#FULL_COLOR=#FFFFFF
+#AC_COLOR=#535353
