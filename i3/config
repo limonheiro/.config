@@ -142,11 +142,11 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 bindsym $mod+Shift+P exec firefox
-bindsym $mod+Shift+G exec Godot_v3.0.6-stable_x11.64
-bindsym $mod+Shift+N exec netbeans
-bindsym $mod+Shift+H exec urxvt -e htop
+bindsym $mod+Shift+S exec spotify
+#bindsym $mod+Shift+G exec Godot_v3.0.6-stable_x11.64
+#bindsym $mod+Shift+H exec urxvt -e htop
 bindsym $mod+G exec gimp 
-bindsym $mod+Shift+O exec octave-gui
+bindsym $mod+Y exec mpv --tls-verify $(xclip -out)
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -176,25 +176,26 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 #change background picture
 bindsym $mod+b exec "feh --randomize --no-scale --bg-fill $HOME/.wallpaper/*"
-bindsym XF86AudioRaiseVolume exec amixer -q set Master 5%+ unmute
-# decrease volume
-bindsym XF86AudioLowerVolume exec amixer -q set Master 5%- unmute
-# mute volume
-bindsym XF86AudioMute exec amixer -q set Master mute
+# change volume or toggle mute
+bindsym XF86AudioRaiseVolume exec amixer -q -D pulse sset Master 5%+ && pkill -RTMIN+10 i3blocks 
+bindsym XF86AudioLowerVolume exec amixer -q -D pulse sset Master 5%-
+bindsym XF86AudioMute exec amixer -q -D pulse sset Master toggle && pkill -RTMIN+10 i3blocks
+
 #hide borders
 hide_edge_borders smart 
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 bindsym $mod+u border none
+bindsym $mod+Delete exec $SCRIPTDIR/shutdown_menu
 exec xcompmgr -c -f -n 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
 	#mode hide
- 	status_command i3blocks 
- 	#i3bar_command i3bar -t
+        #status_command i3blocks
+	status_command SCRIPT_DIR=~/.config/i3blocks/ i3blocks 
+        #i3bar_command i3bar -t
 	colors{
-		background #00000000
 		background #00000000
 	}
 }
