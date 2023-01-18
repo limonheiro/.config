@@ -1,5 +1,11 @@
 #!/bin/sh
 ################################################################
+#AUTHOR
+# Nicolas T.
+#
+#LICENSE
+# GPLv2
+#
 # Tiny System Information tool writen in POSIX shell
 ################################################################
 
@@ -9,16 +15,11 @@ export version='1.0'
 export LC='C'
 export LANG='C'
 #========================= Functions
-MEMORY() # Get memory total and free
-{
-  [ ! -f "/bin/free" ] && { memory='NO INFO'; return ;}
-  memory="$(/bin/free -m|grep "Mem"|awk '{print $3 "MB/" $2 "MB"}')"
-}
-AMBIENT() # i3, xfce, kde blablabla...
-{
-  [ ! -f "${HOME}/.xinitrc" ] && { ambient='NO INFO'; return ;}
-  ambient="$(grep "exec" "$HOME"/.xinitrc | cut -d " " -f "2")"
-}
+
+#memory="$(free -m|grep "Mem"|awk '{print $3 "MB/" $2 "MB"}')"
+ambient="$(grep "exec" "$HOME"/.xinitrc | cut -d " " -f "2")"
+cpu="$(grep -m 1 "model name" /proc/cpuinfo | cut -d " " -f "5")"
+uptime="$(uptime -p|cut -d ',' --output-delimiter=' ' -f '1-' | awk '{print $2 $3 ":" $4 "hr:" $6 "m"}')"
 
 INFO() # Print all info
 {
@@ -29,10 +30,10 @@ OS      : $PRETTY_NAME
 AMBIENT : $ambient
 KERNEL  : $(uname -r)
 SHELL   : ${SHELL##*/}
-CPU     : $(grep -m 1 "model name" /proc/cpuinfo | cut -d " " -f "5")
-UPTIME  : $(uptime -p|cut -d ',' --output-delimiter=' ' -f '1-' | awk '{print $2 $3 ":" $4 "hr:" $6 "m"}')
+CPU     : $cpu
+UPTIME  : $uptime
 ̣̣-------------------------
 EOF
 }
 #========================= Main
-MEMORY; AMBIENT; INFO
+INFO
