@@ -27,11 +27,22 @@
 # Change $SCRIPT_DIR to the location of your scripts!
 #$SCRIPT_DIR=/home/nico/.config/i3blocks/i3blocks-contrib/
 #command=$SCRIPT_DIR/$BLOCK_NAME
-separator_block_width=12
+separator_block_width=3
 markup=none
+color=#ffffff
+
+# Guess the weather hourly
+[weather]
+#command=curl wttr.in/Cuiaba?format=2
+command=curl -s wttr.in/Cuiaba?format=3| cut -d " " -f "2-"
+min_width=☁️+28°C 
+interval=3600
+#color=#A4C2F4
+
 
 [monitors]
-command=$SCRIPT_DIR/monitor_manager
+command=./monitor_manager
+min_width=   
 interval=once
 #SHOW_ON_OFF=1
 #SHOW_NAMES=1
@@ -42,47 +53,35 @@ interval=once
 #SHOW_ROTATION=1
 #SHOW_REFLECTION=1
 #SHOW_BRIGHTNESS=1
-#SHOW_BRIGHTNESS_VALUE=0
+#SHOW_BRIGHTNESS_VALUE=1
 #SHOW_UP_DOWN=1
 #FONT_FAMILY=DejaVu Sans Mono
 #FONT_SIZE=11
 #CLOSE_TO_BOUNDARY_BUFFER=20
 
-[ytdl-mpv]
-command=$SCRIPT_DIR/ytdl-mpv
-markup=pango
-interval=once
-signal=4
-#CACHE_DEFAULT=1048576
-#PLAYING_COLOR=red
-#NOT_PLAYING_COLOR=white
-
-[mediaplayer]
-command=$SCRIPT_DIR/mediaplayer
-instance=spotify
-interval=5
-signal=10
-
 [memory]
-command=$SCRIPT_DIR/memory
-label=MEM
+command=./memory
+label= 
+min_width=   9.9G/9.9G(100%)
+align=center
 interval=30
 
-[cpu_usage]
-command=$SCRIPT_DIR/cpu_usage
+[cpu]
+label= 
+min_width= 9999.99 MHz (100.00%)
+align=center
+command=echo $(lscpu -e=MHZ | tail -n 4 | awk -F '$NR' '{sum+=$1;}END {print sum/4;}') $(echo MHz) '('$(./cpu_usage|head -n1)')'
 interval=1
-label=CPU 
-min_width=CPU: 100.00%
-#t_warn=50
-#T_CRIT=80
-#DECIMALS=2
 
 [disk-io]
-command=$SCRIPT_DIR/disk-io
+command=./disk-io
+min_width=🖴 999 / 999 MM/M
 #command=$SCRIPT_DIR/disk-io -w 3 -M -P 0
+align=center
 interval=persist
 markup=pango
-label=Disk
+LABEL=🖴  
+#label=Disk 
 #instance=/^sda/
 #DT=5
 #MB_ONLY=0 #0 or 1
@@ -98,57 +97,29 @@ label=Disk
 #SUFFIX="B/s"
 
 [volume]
-command=$SCRIPT_DIR/volume
+command=./volume
 #LABEL=♪ 
-label=VOL 
+#label=VOL 
+LABEL= 
+min_width=  100%
+align=center
 interval=once
-signal=10
+signal=1
 interval=1
 #STEP=5%
 #MIXER=[determined automatically]
 #SCONTROL=[determined automatically]
 
 [time]
-command=$SCRIPT_DIR/time
+label= 
+markup=pango
+command=date +%H:%M 
 interval=1
+min_width= 99:99 
+align=center
 #TZ_FILE=~/.tz
 #STRFTIME_FORMAT=%Y-%m-%d %H:%M
 #TZONES=$DEFAULT_TZ,Brazil/East,Australia/Brisbane,Asia/Calcutta
 #TZ_LABELS=,Brazil,AU,Hyderabad
+color=#9dc319
 
-[shutdown_menu]
-full_text=Quit
-# If you are using FontAwesome, we recommend the power-off icon:
-# http://fontawesome.io/icon/power-off/
-command=$SCRIPT_DIR/shutdown_menu
-#FG_COLOR=#bbbbbb
-#BG_COLOR=#111111
-#HLFG_COLOR=#111111
-#HLBG_COLOR=#bbbbbb
-#BORDER_COLOR=#222222
-#ROFI_TEXT=Menu:
-#ROFI_OPTIONS=-width 11 -location 3 -hide-scrollbar -bw 2
-#ZENITY_TITLE=Menu
-#ZENITY_TEXT=Action:
-#ZENITY_OPTIONS=--column= --hide-header
-#ENABLE_CONFIRMATIONS=true (must be true or false)
-#LAUNCHER=rofi (must be rofi or zenity)
-#LOCKSCRIPT=i3lock --color=${BG_COLOR#"#"}
-[batterybar]
-command=$SCRIPT_DIR/batterybar
-label=bat:
-interval=5
-markup=pango
-min_width=bat: ■■■■■
-# Discharging colors low to high
-#C1=#FF0027
-#C2=#FF3B05
-#C3=#FFB923
-#C4=#FFD000
-#C5=#E4FF00
-#C6=#ADFF00
-#C7=#6DFF00
-#C8=#10BA00
-#CHARGING_COLOR=#00AFE3
-#FULL_COLOR=#FFFFFF
-#AC_COLOR=#535353
