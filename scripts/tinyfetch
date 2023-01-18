@@ -1,0 +1,47 @@
+#!/bin/sh
+################################################################
+#AUTHOR
+# Jefferson 'Slackjeff' Carneiro
+#
+#CONTACT
+# jeffersoncarneiro@slackjeff.com.br
+#
+#LICENSE
+# GPLv2
+#
+# Tiny System Information tool writen in POSIX shell
+################################################################
+
+#========================= Variables
+export version='1.0'
+# For speed, support UNICODE OFF
+export LC='C'
+export LANG='C'
+#========================= Functions
+MEMORY() # Get memory total and free
+{
+  [ ! -f "/bin/free" ] && { memory='NO INFO'; return ;}
+  memory="$(/bin/free -m|grep "Mem"|awk '{print $3 "MB/" $2 "MB"}')"
+}
+AMBIENT() # i3, xfce, kde blablabla...
+{
+  [ ! -f "${HOME}/.xinitrc" ] && { ambient='NO INFO'; return ;}
+  ambient="$(grep "exec" "$HOME"/.xinitrc | cut -d " " -f "2")"
+}
+
+INFO() # Print all info
+{
+  . /etc/os-release # Load Info
+  cat <<EOF
+-------------------------
+OS      : $PRETTY_NAME
+AMBIENT : $ambient
+KERNEL  : $(uname -r)
+SHELL   : ${SHELL##*/}
+CPU     : $(grep -m 1 "model name" /proc/cpuinfo | cut -d " " -f "5")
+UPTIME  : $(uptime -p|cut -d ',' --output-delimiter=' ' -f '1-' | awk '{print $2 $3 ":" $4 "hr:" $6 "m"}')
+̣̣-------------------------
+EOF
+}
+#========================= Main
+MEMORY; AMBIENT; INFO
