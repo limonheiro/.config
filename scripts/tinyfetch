@@ -1,14 +1,5 @@
 #!/bin/sh
 ################################################################
-#AUTHOR
-# Jefferson 'Slackjeff' Carneiro
-#
-#CONTACT
-# jeffersoncarneiro@slackjeff.com.br
-#
-#LICENSE
-# GPLv2
-#
 # Tiny System Information tool writen in POSIX shell
 ################################################################
 
