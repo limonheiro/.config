@@ -8,9 +8,9 @@
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
-gaps inner 3
+gaps inner 4
 force_display_urgency_hint 0
-new_window pixel 0 
+new_window pixel 0
 workspace_auto_back_and_forth no
 set $mod Mod4
 
@@ -40,7 +40,7 @@ floating_modifier $mod
 bindsym $mod+Return exec --no-startup-id i3-sensible-terminal
 
 bindsym $mod+Shift+Return exec urxvt -name floating
-for_window [class="URxvt" instance="floating"] floating enable border pixel 0 move left 280px move up 27px
+for_window [class="URxvt" instance="floating"] floating enable border pixel 0 move left 280px move down 8px
 
 
 #start a terminal in float-mode
@@ -150,11 +150,11 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 bindsym $mod+Shift+P exec librewolf
-bindsym $mod+Shift+S exec spotify
+#bindsym $mod+Shift+S exec spotify
 #bindsym $mod+Shift+G exec Godot_v3.0.6-stable_x11.64
-#bindsym $mod+Shift+H exec urxvt -e htop
+bindsym $mod+Shift+H exec urxvt -e htop
 bindsym $mod+G exec gimp 
-bindsym $mod+Y exec mpv --tls-verify $(xclip -out)
+bindsym $mod+Y exec mpv --tls-verify $(xclip -out) >/dev/null
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -186,38 +186,40 @@ bindsym $mod+r mode "resize"
 #bindsym $mod+b exec "feh --randomize --no-scale --bg-scale  --no-fehbg 
 #$HOME/.wallpaper/*"
 # change volume or toggle mute
-bindsym XF86AudioRaiseVolume exec "amixer -c 0 set Master 3dB+" 
-bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master 3dB-"
-bindsym XF86AudioMute exec "amixer -c 0 set Master toggle"
+bindsym XF86AudioRaiseVolume exec "amixer -c 0 set Master 1dB+" 
+bindsym XF86AudioLowerVolume exec "amixer -c 0 set Master 1dB-"
+bindsym XF86AudioMute exec $(amixer -c 0 set Master toggle | amixer -c 0 set Speaker toggle) 
 
 #Lock
 bindsym $mod+Ctrl+L exec i3lock -i ~/.config/i3/i3lock/lock.png
 
 #hide borders
-hide_edge_borders smart 
+#hide_edge_borders smart 
 bindsym --release Caps_Lock exec pkill -SIGRTMIN+11 i3blocks
 bindsym --release Num_Lock  exec pkill -SIGRTMIN+11 i3blocks
 bindsym $mod+u border none
 bindsym $mod+Delete exec ~/.config/i3blocks/shutdown_menu exec xcompmgr -c -f -n
 
- 
+#s
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {	
 	#mode hide
-        #status_command i3blocks
+    #status_command i3blocks
 	status_command i3blocks -c ~/.config/i3blocks/config 
-        font pango:IBM 8
+    font pango:IBM 8
 	#i3bar_command i3bar --transparency
-	
-  	colors {
-    		background #742222
-    		statusline #742222
-    		separator  #742222
+	padding 2px
+	#workspace_button no
+	#binding_mode_indicator no
+	colors {
+		background #742222
+		statusline #742222
+		separator  #742222
 
-    		focused_workspace  #743333 #743333 #fff2ce
-    		inactive_workspace #742222 #742222 #a7afa9
-    		active_workspace   #ff0000 #ff0000 #ffffff
+		focused_workspace  #743333 #743333 #fff2ce
+		inactive_workspace #742222 #742222 #a7afa9
+		active_workspace   #ff0000 #ff0000 #ffffff
 	}
 }
 
