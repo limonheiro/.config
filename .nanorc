@@ -39,7 +39,7 @@ set autoindent
 # set brackets ""')>]}"
 
 ## Automatically hard-wrap the current line when it becomes overlong.
-set breaklonglines
+#set breaklonglines
 
 ## Do case-sensitive searches by default.
  set casesensitive
@@ -128,7 +128,7 @@ set magic
 # set punct "!.?"
 
 ## Make status-bar messages disappear after 1 keystroke instead of after 20.
- set quickblank
+# set quickblank
 
 ## The regular expression that matches quoting characters in email
 ## or line-comment introducers in source code.  The default is:
@@ -160,7 +160,7 @@ set magic
 # set smarthome
 
 ## Spread overlong lines over multiple screen lines.
-set softwrap
+#set softwrap
 
 ## Use this spelling checker instead of the internal one.  This option
 ## does not have a default value.
