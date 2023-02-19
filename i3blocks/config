@@ -27,15 +27,22 @@
 # Change $SCRIPT_DIR to the location of your scripts!
 #$SCRIPT_DIR=/home/nico/.config/i3blocks/i3blocks-contrib/
 #command=$SCRIPT_DIR/$BLOCK_NAME
+export LC='C'; export LANG='C'
+
 separator_block_width=3
-markup=none
+markup=block
 color=#ffffff
+
+
+command=./wifiSSID
+interval=1
+signal=1
 
 # Guess the weather hourly
 [weather]
 #command=curl wttr.in/Cuiaba?format=2
 command=curl -s wttr.in/Cuiaba?format=3| cut -d " " -f "2-"
-min_width=☁️+28°C 
+min_width=☁️+99°C     
 interval=3600
 #color=#A4C2F4
 
@@ -60,27 +67,29 @@ interval=once
 #CLOSE_TO_BOUNDARY_BUFFER=20
 
 [memory]
-command=./memory
+#command=./memory
+command=free --si -mh|grep "Mem"|awk '{print $3 "/" $2 }'
 label= 
-min_width=   9.9G/9.9G(100%)
+min_width=  9.9G/9.9G 
 align=center
 interval=30
 
 [cpu]
 label= 
-min_width= 9999.99 MHz (100.00%)
+min_width=  9999.99 MHz (100.00%) 
 align=center
-command=echo $(lscpu -e=MHZ | tail -n 4 | awk -F '$NR' '{sum+=$1;}END {print sum/4;}') $(echo MHz) '('$(./cpu_usage|head -n1)')'
+command=echo $(lscpu -e=MHZ | awk -F '$NR' '{sum+=$1;}END {print sum/8;}') $(echo MHz) '('$(mpstat -T 1 -n 2| tail -n1 | tr -s " "| cut -d " " -f12 | awk '{print 100 - $1 "%"}')')'
 interval=1
 
 [disk-io]
-command=./disk-io
-min_width=🖴 999 / 999 MM/M
+#command=./disk-io
+command=iostat  -kd 1 1 -y --human | grep sda | awk '{print $3 "/s - " $4 "/s"}'
+min_width= 🖴 999M/s - 999M/s 
 #command=$SCRIPT_DIR/disk-io -w 3 -M -P 0
 align=center
-interval=persist
+interval=1
 markup=pango
-LABEL=🖴  
+label=🖴  
 #label=Disk 
 #instance=/^sda/
 #DT=5
@@ -97,11 +106,12 @@ LABEL=🖴
 #SUFFIX="B/s"
 
 [volume]
-command=./volume
+#command=./volume
+command=amixer get Master | tail -n1 | cut -d " " -f "6,8" | awk  '{ print ($2 == "[off]") ? "MUTE": $1}'| tr -d "[?]"
 #LABEL=♪ 
 #label=VOL 
-LABEL= 
-min_width=  100%
+label= 
+min_width=  100% 
 align=center
 interval=once
 signal=1
@@ -113,9 +123,10 @@ interval=1
 [time]
 label= 
 markup=pango
-command=date +%H:%M 
+#command=date +%H:%M 
+command=date +%H:%M:%S
 interval=1
-min_width= 99:99 
+min_width=  99:99 
 align=center
 #TZ_FILE=~/.tz
 #STRFTIME_FORMAT=%Y-%m-%d %H:%M
