@@ -47,13 +47,13 @@ COLORBAR=$'\e[1;31;41m  \e[0m\e[8;30;42m  \e[0m\e[8;30;43m   \e[0m\e[8;30;44m   
 . /etc/os-release # Load Info
 
 cat <<-EOF
-${c8}-----------------------
+${c8}-----.------------------
 OS      : ${PRETTY_NAME}
 AMBIENT : ${ambient}
 KERNEL  : ${uname}
 SHELL   : ${SHELL##*/}
 CPU     : ${cpu}
 UPTIME  : ${uptime}
-̣̣-----------------------
+̣̣-----------.------------
 ${end}${COLORBAR}
 EOF
