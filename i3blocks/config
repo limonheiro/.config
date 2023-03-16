@@ -76,14 +76,14 @@ interval=30
 
 [cpu]
 label= 
-min_width=  9999.99 MHz (100.00%) 
+min_width=  9999.99 MHz (100.00%) +999ºĈ
 align=center
-command=echo $(lscpu -e=MHZ | awk -F '$NR' '{sum+=$1;}END {print sum/8;}') $(echo MHz) '('$(mpstat -T 1 -n 2| tail -n1 | tr -s " "| cut -d " " -f12 | awk '{print 100 - $1 "%"}')')'
+command=echo $(lscpu -e=MHZ | awk -F '$NR' '{sum+=$1;}END {print sum/8;}') $(echo MHz) '('$(mpstat -T 1 -n 2| tail -n1 | tr -s " "| cut -d " " -f12 | awk '{print 100 - $1 "%"}')')' $(sensors | grep CPU | tr -d [:space:] | cut -d ":" -f2)
 interval=1
 
 [disk-io]
 #command=./disk-io
-command=iostat  -kd 1 1 -y --human | grep sda | awk '{print $3 "/s - " $4 "/s"}'
+command=iostat  -kd 1 1 -y --human | grep sdb | awk '{print $3 "/s - " $4 "/s"}'
 min_width= 🖴 999M/s - 999M/s 
 #command=$SCRIPT_DIR/disk-io -w 3 -M -P 0
 align=center
