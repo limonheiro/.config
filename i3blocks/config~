@@ -41,8 +41,7 @@ signal=1
 # Guess the weather hourly
 [weather]
 #command=curl wttr.in/Cuiaba?format=2
-#command=curl -s wttr.in/Cuiaba?format=3| cut -d " " -f "2-"
-command= curl -s wttr.in/Cuiaba?format=3| cut -d " " -f "2-"|tr -d " "
+command=curl -s wttr.in/Cuiaba?format=3| cut -d " " -f "2-"
 label= 
 min_width= ☁️+99°C     
 interval=3600

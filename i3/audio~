@@ -1,0 +1,13 @@
+#! bin/bash
+#========================= Variables
+#
+# For speed, support UNICODE OFF
+export LC='C'; export LANG='C'
+
+
+amixer -c 0 set Master toggle
+for device in {Headphone,Speaker};do 
+	if [ $(amixer -R get Master| tail -n1 | rev | cut -d " " -f1| tr -d "]? [") != $(amixer -R get $device| tail -n1 | rev | cut -d " " -f1 | tr -d "]?[") ];  then 
+		amixer -c 0 set $device toggle
+	fi;
+done
