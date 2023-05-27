@@ -1,0 +1,57 @@
+#! /bin/sh
+#shellcheck disable=2034
+
+###############################################################
+#AUTHOR
+# Nicolas T.
+#
+#LICENSE
+# MIT License
+#
+# Tiny System Information tool writen in POSIX shell
+# Changelog
+#	- set new
+#	- display bar color
+#	- set white color in EOF
+#	- uptime update
+################################################################
+
+
+#========================= Variables
+#
+# For speed, support UNICODE OFF
+export LC='C'; export LANG='C'
+
+#get memory value
+#memory="$(free -m|grep "Mem"|awk '{print $3 "MB/" $2 "MB"}')"
+
+#get wm using .xinitrc
+ambient="$(grep "exec" "$HOME"/.xinitrc | cut -d " " -f "2")"
+#get cpu using /proc/cpuinfo
+cpu="$(grep -m 1 "model name" /proc/cpuinfo | cut -d " " -f "5")"
+#pretty uptime
+#uptime="$(uptime -p|cut -d ',' --output-delimiter=' ' -f '1-' | awk '{print $2 $3 ":" $4 "hr:" $6 "m"}')"
+uptime="$(uptime -p|cut -d "," -f1- --output-delimiter=" "|tr -d "[:space:]" |sed "s/up//;s/hour\?s/h/;s/minute\?s/m/;s/day\?s/d/")"
+#uname, oblivious
+uname=$(uname -r)
+
+#get colors value
+end='\033[0m'; c8='\033[1;38m'
+#red=$'\e[1;31m'; green=$'\e[1;32m'
+#c3=$'\e[1;33m';  c4=$'\e[1;34m'
+#c5=$'\e[1;35m';  c6=$'\e[1;36m'
+#c7=$'\033[1;37m'; c8=$'\033[1;38m'
+
+COLORBAR='\033[1;31;41m  \033[0m\033[8;30;42m  \033[0m\033[8;30;43m   \033[0m\033[8;30;44m   \033[0m\033[8;30;45m    \033[0m\033[8;30;46m    \033[0m\033[8;30;47m    \033[0m'
+
+. /etc/os-release # Load Info
+
+printf "${c8}-----------------------  \n\
+OS      : ${PRETTY_NAME}    \n\
+AMBIENT : ${ambient}   \n\
+KERNEL  : ${uname}   \n\
+SHELL   : ${SHELL##*/}  \n\
+CPU     : ${cpu}   \n\
+UPTIME  : ${uptime}   \n\
+̣̣-----------------------  \n\
+${end}${COLORBAR}\n"
